@@ -1,7 +1,10 @@
+//! Trieton is a Zig implementation of the trie data structure.
+
 const std = @import("std");
 const mem = std.mem;
 const testing = std.testing;
 
+/// Create a new trie with the given key and value types.
 pub fn Trieton(comptime K: type, comptime V: type) type {
     return struct {
         const NodeMap = std.AutoHashMap(K, Node);
@@ -10,14 +13,14 @@ pub fn Trieton(comptime K: type, comptime V: type) type {
             value: ?V,
             children: ?NodeMap,
 
-            pub fn init() Node {
+            fn init() Node {
                 return Node{
                     .value = null,
                     .children = null,
                 };
             }
 
-            pub fn deinit(self: *Node) void {
+            fn deinit(self: *Node) void {
                 if (self.children) |*children| {
                     var iter = children.iterator();
                     while (iter.next()) |entry| {
@@ -44,6 +47,7 @@ pub fn Trieton(comptime K: type, comptime V: type) type {
             self.root.deinit();
         }
 
+        /// add a value for the specified key. Keys are slices of the key value type.
         pub fn add(self: *Self, key: []const K, value: V) !void {
             var current = &self.root;
 
@@ -59,11 +63,14 @@ pub fn Trieton(comptime K: type, comptime V: type) type {
             current.value = value;
         }
 
+        /// Lookup is returned from the find method on a successful match. The index field refers to
+        /// the index of the element in the key slice that produced the match.
         pub const Lookup = struct {
             index: usize,
             value: V,
         };
 
+        /// finds the matching value for the given key, null otherwise.
         pub fn find(self: Self, key: []const K) ?Lookup {
             var current = &self.root;
             var result: ?Lookup = null;
