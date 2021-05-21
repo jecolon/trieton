@@ -45,7 +45,7 @@ test "Byte Trieton" {
     // that key.
     const Lookup = ByteTrie.Lookup;
 
-    // Setup the trie.
+    // Setup the trie. If the value type is allocated memory, a std.heap.ArenaAllocator is recommended.
     var byte_trie = ByteTrie.init(std.testing.allocator);
     defer byte_trie.deinit();
 
