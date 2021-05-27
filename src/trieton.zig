@@ -103,9 +103,9 @@ test "Byte Trieton" {
     try byte_trie.add(&[_]u8{ 1, 2 }, {});
     try byte_trie.add(&[_]u8{ 1, 2, 3 }, {});
 
-    testing.expectEqual(Lookup{ .index = 2, .value = {} }, byte_trie.find(&[_]u8{ 1, 2, 3 }).?);
-    testing.expectEqual(Lookup{ .index = 1, .value = {} }, byte_trie.find(&[_]u8{ 1, 2 }).?);
-    testing.expectEqual(byte_trie.find(&[_]u8{1}), null);
+    try testing.expectEqual(Lookup{ .index = 2, .value = {} }, byte_trie.find(&[_]u8{ 1, 2, 3 }).?);
+    try testing.expectEqual(Lookup{ .index = 1, .value = {} }, byte_trie.find(&[_]u8{ 1, 2 }).?);
+    try testing.expectEqual(byte_trie.find(&[_]u8{1}), null);
 }
 
 test "Code Point Map Trieton" {
@@ -118,7 +118,7 @@ test "Code Point Map Trieton" {
     try cpmap_trie.add(&[_]u21{ 1, 2 }, 0x2112);
     try cpmap_trie.add(&[_]u21{ 1, 2, 3 }, 0x3113);
 
-    testing.expectEqual(Lookup{ .index = 2, .value = 0x3113 }, cpmap_trie.find(&[_]u21{ 1, 2, 3 }).?);
-    testing.expectEqual(Lookup{ .index = 1, .value = 0x2112 }, cpmap_trie.find(&[_]u21{ 1, 2 }).?);
-    testing.expect(cpmap_trie.find(&[_]u21{1}) == null);
+    try testing.expectEqual(Lookup{ .index = 2, .value = 0x3113 }, cpmap_trie.find(&[_]u21{ 1, 2, 3 }).?);
+    try testing.expectEqual(Lookup{ .index = 1, .value = 0x2112 }, cpmap_trie.find(&[_]u21{ 1, 2 }).?);
+    try testing.expect(cpmap_trie.find(&[_]u21{1}) == null);
 }
