@@ -24,7 +24,7 @@ pub fn Trieton(comptime K: type, comptime V: type) type {
                 if (self.children) |*children| {
                     var iter = children.iterator();
                     while (iter.next()) |entry| {
-                        entry.value.deinit();
+                        entry.value_ptr.deinit();
                     }
                     children.deinit();
                 }
@@ -55,9 +55,9 @@ pub fn Trieton(comptime K: type, comptime V: type) type {
                 if (current.children == null) current.children = NodeMap.init(self.allocator);
                 var result = try current.children.?.getOrPut(k);
                 if (!result.found_existing) {
-                    result.entry.value = Node.init();
+                    result.value_ptr.* = Node.init();
                 }
-                current = &result.entry.value;
+                current = result.value_ptr;
             }
 
             current.value = value;
